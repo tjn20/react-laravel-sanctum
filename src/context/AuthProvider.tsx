@@ -27,8 +27,8 @@ export default function AuthProvider({ children, emailVerification = true, confi
     checkAuthentication();
   }, []);
 
-  const signIn = (credentials: any) => {
-    return new Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: {} }>(async (resolve, reject) => {
+  const signIn = (credentials: Record<string,any>) => {
+    return new Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: Record<string,any> }>(async (resolve, reject) => {
       try {
         await axiosInstance.post(signInRoute, credentials);
         const user = await revalidate();
@@ -44,8 +44,8 @@ export default function AuthProvider({ children, emailVerification = true, confi
     });
   };
 
-  const signUp = (credentials: any) => {
-    return new Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: {} }>(async (resolve, reject) => {
+  const signUp = (credentials: Record<string,any>) => {
+    return new Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: Record<string,any> }>(async (resolve, reject) => {
       try {
         if(!signUpRoute)
         {
@@ -161,7 +161,7 @@ export default function AuthProvider({ children, emailVerification = true, confi
     });
   };
 
-  const setUser = (user: {} | null, authenticated: boolean, verified: boolean) => {
+  const setUser = (user: Record<string,any> | null, authenticated: boolean, verified: boolean) => {
     setAuthenticationState({ user, authenticated, verified });
   };
 

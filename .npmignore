@@ -5,6 +5,7 @@
 .env
 .eslintrc.cjs
 .DS_Store
+.gitignore
 
 index.html
 tsconfig.json

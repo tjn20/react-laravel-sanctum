@@ -12,19 +12,19 @@ export interface AuthConfig {
 }
 
 export interface AuthState {
-  user: {} | null;
+  user: Record<string,any> | null;
   authenticated: boolean | null;
   verified: boolean | null;
 }
 
 export interface AuthContextType {
-  user: {} | null;
+  user: Record<string,any> | null;
   authenticated: boolean | null;
   verified: boolean | null;
   loading: boolean;
-  setUser: (user: {} | null, authenticated: boolean, verified: boolean) => void;
-  signIn: (credentials: any) => Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: {} }>;
-  signUp: (credentials: any) => Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: {} }>;
+  setUser: (user: Record<string,any> | null, authenticated: boolean, verified: boolean) => void;
+  signIn: (credentials: Record<string,any>) => Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: Record<string,any> }>;
+  signUp: (credentials: Record<string,any>) => Promise<{ mustVerifyEmail: boolean; signedIn: boolean; user?: Record<string,any> }>;
   verifyEmail: (id: string, hash: string, expires: string, signature: string) => Promise<{}>;
   sendEmailVerification: () => Promise<void>;
   signOut: () => Promise<void>;
