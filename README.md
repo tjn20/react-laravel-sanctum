@@ -139,7 +139,7 @@ const authConfig = {
   * Optional (unless verifyEmail() will be used) 
   * Sends a GET request to this endpoint to verify the user.
   */  
-  verifyEmailRoute: (id: string, hash: string, expires: string, signature: string) => `/verify-email?id=${id}&hash=${hash}&expires=${expires}&signature=${signature}`;
+  verifyEmailRoute: (id: string, hash: string, expires: string, signature: string) => `/verify-email/${id}/${hash}?expires=${expires}&signature=${signature}`;
   /*
   * Required 
   * Sends a POST request to this endpoint to logout the user.
