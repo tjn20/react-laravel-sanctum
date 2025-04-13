@@ -28,7 +28,7 @@ export interface AuthContextType {
   verifyEmail: (id: string, hash: string, expires: string, signature: string) => Promise<{}>;
   sendEmailVerification: () => Promise<void>;
   signOut: () => Promise<void>;
-  handleSessionTimeOut: (error: any) => void;
+  handleSessionTimeout: (error: any) => void;
 }
 
 export interface AuthProviderProps {

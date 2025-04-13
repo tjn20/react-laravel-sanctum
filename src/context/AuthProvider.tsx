@@ -85,7 +85,7 @@ export default function AuthProvider({ children, emailVerification = true, confi
     });
   };
 
-  const handleSessionTimeOut = (error: AxiosError) => {
+  const handleSessionTimeout = (error: AxiosError) => {
     if (error.response?.status === 401 || error.response?.status === 409) {
       setAuthenticationState({ user: null, authenticated: false, verified: false });
     }
@@ -178,7 +178,7 @@ export default function AuthProvider({ children, emailVerification = true, confi
         verifyEmail,
         sendEmailVerification,
         signOut,
-        handleSessionTimeOut,
+        handleSessionTimeout,
       }}
     >
       {children}

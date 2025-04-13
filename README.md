@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/github/license/tjn20/react-laravel-sanctum" alt="License">
 </p>
 
-## React Laravel Sanctum
+## Introduction 
 
 A simple and flexible React package for authenticating your React application using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum#introduction).
 
@@ -54,41 +54,42 @@ You can then use the `useAuth()` hook to access authentication and verification 
 ```js
 import { useAuth } from "react-laravel-sanctum";
 
-const LoginForm = () => (
-  const { signIn } = useAuth()
+const LoginForm = () => {
+  const { signIn } = useAuth();
 
   const handleLogin = () => {
-    const credentials = { 
+    const credentials = {
       email: "username@example.com",
       password: "example"
-    }
+    };
 
     signIn(credentials)
-    .then(({mustVerifyEmail})=>{
-      if(mustVerifyEmail)
-      {
-        console.log("Must Verify Email Message")
-      }
-    })
-    .catch((error)=>{
-      console.log("Error Message")
-    })
-  }
-    retrun <button onClick={()=>handleLogin()}>Login</button>
-);
+      .then(({ mustVerifyEmail }) => {
+        if (mustVerifyEmail) {
+          console.log("Must Verify Email Message");
+        }
+      })
+      .catch((error) => {
+        console.log("Error Message");
+      });
+  };
+
+  return <button onClick={() => handleLogin()}>Login</button>;
+};
 ```
 
 ```js
 import { useAuth } from "react-laravel-sanctum";
 
-const UserComponent = () => (
-  const { user } = useAuth()
-    retrun (
-      <div>
-        Hello {user?.first_name}
-      </div>
-    )
-);
+const UserComponent = () => {
+  const { user } = useAuth();
+
+  return (
+    <div>
+      Hello {user?.first_name}
+    </div>
+  );
+};
 ```
 ## Methods & Properties Available with `useAuth()`
 The `useAuth` hook gives you access to the `AuthContext`.
@@ -105,7 +106,7 @@ The `useAuth` hook gives you access to the `AuthContext`.
 | `setUser()` |  Accepts `(user, authenticated, verified)`, allows you to manually set the user by providing the user object, authentication and verfication status (boolean). |
 | `sendEmailVerification()` | Return a promise, resolves with no values. |
 | `verifyEmail()` | Accepts `(id: string, hash: string, expires: string, signature: string)`, returns a promise, resolves with `{user: {}}`.  |
-| `handleSessionTimeOut()` | Accepts `(error: AxiosError)`, returns nothing.  |
+| `handleSessionTimeout()` | Accepts `(error: AxiosError)`, returns nothing.  |
 
 ## Config Setup
 Not all URLS in the config are required. These need to be defined in your Laravel application.
@@ -153,6 +154,23 @@ react-laravel-sanctum automatically checks if the user is signed in when the `<A
 ```js
 <AuthProvider config={authConfig} emailVerification={false}>
 ```
+## Handling Session Timeout
+
+This function updates the authentication state in the event that the user's session has timed out. It is particularly useful when implementing protected routes, as it ensures that users are redirected or logged out when their session expires.
+
+```js
+const { handleSessionTimeout } = useAuth();
+
+axiosInstance.get("/protected-resource")
+  .then(response => {
+    // handle successful response
+  })
+  .catch(error => {
+    // handle session timeout error
+    handleSessionTimeout(error);
+  });
+
+```
 
 ## Email Verification
 
@@ -167,60 +185,60 @@ Example for implementation:
 This is the `<SignUpForm> Component`:
 ```js
 import { useAuth } from "react-laravel-sanctum";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
-const SignUpForm = () => (
-  const { signUp } = useAuth()
+const SignUpForm = () => {
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   const handleRegistration = () => {
-    const credentials = { 
+    const credentials = {
       name: "user",
       email: "username@example.com",
       password: "example"
-    }
+    };
 
     signUp(credentials)
-    .then(({mustVerifyEmail})=>{
-      if(mustVerifyEmail)
-      {
-        navigate('Email verification notification component'); // to allow users to resend the email verification notification
-      }
-    })
-    .catch((error)=>{
-      console.log("Error Message")
-    })
-  }
-    retrun <button onClick={()=>handleRegistration()}>SignUp</button>
-);
+      .then(({ mustVerifyEmail }) => {
+        if (mustVerifyEmail) {
+          navigate("Email verification notification component"); // to allow users to resend the email verification notification
+        }
+      })
+      .catch((error) => {
+        console.log("Error Message");
+      });
+  };
+
+  return <button onClick={() => handleRegistration()}>SignUp</button>;
+};
 ```
 
 This is the `<EmailVerificationProcessing> Component`, The URL is obtained from the verification email sent to the user:
 ```js
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useAuth } from "react-laravel-sanctum";
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom";
 
-const EmailVerificationProcessing = () => (
-    const { verifyEmail }  = useAuth()
-    const location = useLocation();
-    const { id,hash } = useParams()
-    const queryParams = new URLSearchParams(location.search);
-    const expires = queryParams.get('expires')
-    const signature = queryParams.get('signature')
+const EmailVerificationProcessing = () => {
+  const { verifyEmail } = useAuth();
 
+  useEffect(() => {
+    const id = "example";
+    const hash = "example";
+    const expires = "example";
+    const signature = "example";
 
-  useEffect(()=>{
-       if(!id || !hash || !expires || !signature) return
-       verifyEmail(id,hash,expires,signature)
-       .catch((error)=>{
-          console.log(error)
-       })
-    },[])
+    verifyEmail(id, hash, expires, signature).catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
-    retrun (<div>
+  return (
+    <div>
       Verifying....
-    </div>)
-);
+    </div>
+  );
+};
 ```
 
 ## Axios
