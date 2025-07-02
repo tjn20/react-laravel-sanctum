@@ -1,8 +1,8 @@
 {
   "name": "react-laravel-sanctum",
   "private": false,
-  "version": "1.0.2",
-  "description": "Easily integrate Laravel Sanctum and Breeze authentication into your React app.", 
+  "version": "1.0.3",
+  "description": "Easily integrate Laravel Sanctum and Breeze authentication into your React app.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
@@ -41,7 +41,7 @@
     "sanctum"
   ],
   "author": {
-    "name":"TJN",
+    "name": "TJN",
     "url": "https://github.com/tjn20"
   },
   "license": "MIT",

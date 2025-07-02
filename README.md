@@ -1,4 +1,3 @@
-
 <h1 align="center">React Laravel Sanctum</h1>
 <p align="center">
   <a href="https://www.npmjs.com/package/react-laravel-sanctum">
@@ -11,7 +10,7 @@
   <img src="https://img.shields.io/github/license/tjn20/react-laravel-sanctum" alt="License">
 </p>
 
-## Introduction 
+## Introduction
 
 A simple and flexible React package for authenticating your React application using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum#introduction).
 
@@ -20,7 +19,7 @@ A simple and flexible React package for authenticating your React application us
 - Minimal dependencies — only requires [axios](https://github.com/axios/axios)
 - Simplifies the creation of protected routes
 
-## Installation 
+## Installation
 
 Install from NPM
 
@@ -28,7 +27,7 @@ Install from NPM
 npm i react-laravel-sanctum
 ```
 
-## Usage 
+## Usage
 
 Wrap your react application in a `<AuthProvider>` component
 
@@ -40,15 +39,14 @@ const authConfig = {
   axiosInstance: axios,
   signInRoute: "/login",
   authenticationCheckRoute: "/auth-check",
-  signOutRoute: "/logout" 
+  signOutRoute: "/logout",
 };
 
 const App = () => (
-    <AuthProvider config={authConfig}>
-      /* Your application code */
-    </AuthProvider>
+  <AuthProvider config={authConfig}>/* Your application code */</AuthProvider>
 );
 ```
+
 You can then use the `useAuth()` hook to access authentication and verification status, user data, and other related methods in any component wrapped by the `<AuthProvider>` component.
 
 ```js
@@ -60,7 +58,7 @@ const LoginForm = () => {
   const handleLogin = () => {
     const credentials = {
       email: "username@example.com",
-      password: "example"
+      password: "example",
     };
 
     signIn(credentials)
@@ -84,37 +82,36 @@ import { useAuth } from "react-laravel-sanctum";
 const UserComponent = () => {
   const { user } = useAuth();
 
-  return (
-    <div>
-      Hello {user?.first_name}
-    </div>
-  );
+  return <div>Hello {user?.first_name}</div>;
 };
 ```
+
 ## Methods & Properties Available with `useAuth()`
+
 The `useAuth` hook gives you access to the `AuthContext`.
 
-| | Description |
-|-|------------------------------------------------------------------------------------|
-| `user` | The authenticated user object returned from your API. `null` if not authenticated. |
-| `authenticated` | Boolean if has authentication has been checked, or null if authentication has not yet been checked. |
-| `verified` | Boolean if has verification has been checked, or null if verification has not yet been checked. |
-| `loading` | `true` while checking user authentication, `false` when the check is complete. |
-| `signIn()` | Accepts `({}: Credentials)`, returns a promise, resolves with `{mustVerifyEmail: boolean, signedIn: boolean, user: {}}`. |
-| `signUp()` | Accepts `({}: Credentials)`, resolves with `{mustVerifyEmail: boolean, signedIn: boolean, user: {}}`. |
-| `signOut()` | Returns a promise, resolves with no values. |
-| `setUser()` |  Accepts `(user, authenticated, verified)`, allows you to manually set the user by providing the user object, authentication and verfication status (boolean). |
-| `sendEmailVerification()` | Return a promise, resolves with no values. |
-| `verifyEmail()` | Accepts `(id: string, hash: string, expires: string, signature: string)`, returns a promise, resolves with `{user: {}}`.  |
-| `handleSessionTimeout()` | Accepts `(error: AxiosError)`, returns nothing.  |
+|                           | Description                                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `user`                    | The authenticated user object returned from your API. `null` if not authenticated.                                                                            |
+| `authenticated`           | Boolean if has authentication has been checked, or null if authentication has not yet been checked.                                                           |
+| `verified`                | Boolean if has verification has been checked, or null if verification has not yet been checked.                                                               |
+| `loading`                 | `true` while checking user authentication, `false` when the check is complete.                                                                                |
+| `signIn()`                | Accepts `({}: Credentials)`, returns a promise, resolves with `{mustVerifyEmail: boolean, signedIn: boolean, user: {}}`.                                      |
+| `signUp()`                | Accepts `({}: Credentials)`, resolves with `{mustVerifyEmail: boolean, signedIn: boolean, user: {}}`.                                                         |
+| `signOut()`               | Returns a promise, resolves with no values.                                                                                                                   |
+| `setUser()`               | Accepts `(user, authenticated, verified)`, allows you to manually set the user by providing the user object, authentication and verfication status (boolean). |
+| `sendEmailVerification()` | Return a promise, resolves with no values.                                                                                                                    |
+| `verifyEmail()`           | Accepts `(id: string, hash: string, expires: string, signature: string)`, returns a promise, resolves with `{user: {}}`.                                      |
+| `handleSessionTimeout()`  | Accepts `(error: AxiosError)`, returns nothing.                                                                                                               |
 
 ## Config Setup
+
 Not all URLS in the config are required. These need to be defined in your Laravel application.
 
 ```js
 const authConfig = {
   // An axiosInstance is required to be used by react-laravel-sanctum.
-  axiosInstance: AxiosInstance; 
+  axiosInstance: AxiosInstance;
   /*
   * Required
   * Sends a POST request to this endpoint to log in the user.
@@ -126,25 +123,25 @@ const authConfig = {
   */
   signUpRoute: "/register";
   /*
-  * Required  
+  * Required
   * Sends a GET request to this endpoint to this endpoint to check the user authentication status.
   * Returns a user object that is represented as `user` in the React application.
-  */  
+  */
   authenticationCheckRoute: "/auth-check";
   /*
-  * Optional (unless sendEmailVerification() will be used) 
+  * Optional (unless sendEmailVerification() will be used)
   * Sends a POST request to this endpoint to send an email verification notification.
-  */  
+  */
   sendEmailVerificationRoute: "/verification-notification";
   /*
-  * Optional (unless verifyEmail() will be used) 
+  * Optional (unless verifyEmail() will be used)
   * Sends a GET request to this endpoint to verify the user.
-  */  
+  */
   verifyEmailRoute: (id: string, hash: string, expires: string, signature: string) => `/verify-email/${id}/${hash}?expires=${expires}&signature=${signature}`;
   /*
-  * Required 
+  * Required
   * Sends a POST request to this endpoint to logout the user.
-  */ 
+  */
   signOutRoute: '/logout';
 };
 ```
@@ -154,6 +151,13 @@ react-laravel-sanctum automatically checks if the user is signed in when the `<A
 ```js
 <AuthProvider config={authConfig} emailVerification={false}>
 ```
+
+Similarly, `onInitCheck` is set to `false` by default. When set to `true`, it checks if the user is authenticated when `<AuthProvider>` mounts. If you would like to enable this behavior, set `onInitCheck` to `true` like this:
+
+```js
+<AuthProvider config={authConfig} onInitCheck={true}>
+```
+
 ## Handling Session Timeout
 
 This function updates the authentication state in the event that the user's session has timed out. It is particularly useful when implementing protected routes, as it ensures that users are redirected or logged out when their session expires.
@@ -161,15 +165,15 @@ This function updates the authentication state in the event that the user's sess
 ```js
 const { handleSessionTimeout } = useAuth();
 
-axiosInstance.get("/protected-resource")
-  .then(response => {
+axiosInstance
+  .get("/protected-resource")
+  .then((response) => {
     // handle successful response
   })
-  .catch(error => {
+  .catch((error) => {
     // handle session timeout error
     handleSessionTimeout(error);
   });
-
 ```
 
 ## Email Verification
@@ -178,11 +182,12 @@ This package supports email verification using Laravel Breeze out of the box.
 
 1. Install Laravel Breeze as an API using the following instructions https://laravel.com/docs/11.x/starter-kits#laravel-breeze-installation
 
-2. Ensure the User Model implements `MustVerifyEmail` interface. 
+2. Ensure the User Model implements `MustVerifyEmail` interface.
 
 Example for implementation:
 
 This is the `<SignUpForm> Component`:
+
 ```js
 import { useAuth } from "react-laravel-sanctum";
 import { useNavigate } from "react-router-dom";
@@ -195,7 +200,7 @@ const SignUpForm = () => {
     const credentials = {
       name: "user",
       email: "username@example.com",
-      password: "example"
+      password: "example",
     };
 
     signUp(credentials)
@@ -214,6 +219,7 @@ const SignUpForm = () => {
 ```
 
 This is the `<EmailVerificationProcessing> Component`, The URL is obtained from the verification email sent to the user:
+
 ```js
 import { useEffect } from "react";
 import { useAuth } from "react-laravel-sanctum";
@@ -233,11 +239,7 @@ const EmailVerificationProcessing = () => {
     });
   }, []);
 
-  return (
-    <div>
-      Verifying....
-    </div>
-  );
+  return <div>Verifying....</div>;
 };
 ```
 
